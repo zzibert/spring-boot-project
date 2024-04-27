@@ -3,7 +3,7 @@ package com.zzibert.accounts.mapper;
 import com.zzibert.accounts.dto.AccountDto;
 import com.zzibert.accounts.entity.Account;
 
-public class AccountsMapper {
+public class AccountMapper {
 
     public static AccountDto mapToAccountsDto(Account accounts, AccountDto accountsDto) {
         accountsDto.setAccountNumber(accounts.getAccountNumber());

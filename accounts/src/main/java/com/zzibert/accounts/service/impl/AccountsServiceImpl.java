@@ -1,10 +1,13 @@
 package com.zzibert.accounts.service.impl;
 
 import com.zzibert.accounts.constants.AccountsConstants;
+import com.zzibert.accounts.dto.AccountDto;
 import com.zzibert.accounts.dto.CustomerDto;
 import com.zzibert.accounts.entity.Account;
 import com.zzibert.accounts.entity.Customer;
 import com.zzibert.accounts.exception.CustomerAlreadyExistException;
+import com.zzibert.accounts.exception.ResourceNotFoundException;
+import com.zzibert.accounts.mapper.AccountMapper;
 import com.zzibert.accounts.mapper.CustomerMapper;
 import com.zzibert.accounts.repository.AccountRepository;
 import com.zzibert.accounts.repository.CustomerRepository;
@@ -35,6 +38,19 @@ public class AccountsServiceImpl implements IAccountsService {
             Customer savedCustomer = customerRepository.save(customer);
             accountRepository.save(createNewAccount(savedCustomer));
         }
+    }
+
+    @Override
+    public CustomerDto fetchAccount(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+        Account account = accountRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+        );
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountDto(AccountMapper.mapToAccountsDto(account, new AccountDto()));
+        return customerDto;
     }
 
     private Account createNewAccount(Customer customer) {
