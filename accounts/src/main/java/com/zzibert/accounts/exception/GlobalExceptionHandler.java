@@ -12,31 +12,31 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CustomerAlreadyExistException.class)
-    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(
-            CustomerAlreadyExistException exception,
-            WebRequest webRequest
-    ) {
-        ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.BAD_REQUEST,
-                exception.getMessage(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(CustomerAlreadyExistException.class)
+  public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(
+    CustomerAlreadyExistException exception,
+    WebRequest webRequest
+  ) {
+    ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.BAD_REQUEST,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+  }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(
-            ResourceNotFoundException exception,
-            WebRequest webRequest
-    ) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
-                webRequest.getDescription(false),
-                HttpStatus.NOT_FOUND,
-                exception.getMessage(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
-    }
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(
+    ResourceNotFoundException exception,
+    WebRequest webRequest
+  ) {
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+      webRequest.getDescription(false),
+      HttpStatus.NOT_FOUND,
+      exception.getMessage(),
+      LocalDateTime.now()
+    );
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+  }
 }
