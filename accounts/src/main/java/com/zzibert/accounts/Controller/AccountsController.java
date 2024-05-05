@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,12 +17,18 @@ import org.springframework.http.MediaType;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-@AllArgsConstructor
 @Validated
 public class AccountsController {
 
 
   private IAccountsService iAccountsService;
+
+  public AccountsController(IAccountsService iAccountsService) {
+    this.iAccountsService = iAccountsService;
+  }
+
+  @Value("${build.version}")
+  private String buildVersion;
 
   @PostMapping("/create")
   public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
@@ -71,6 +78,13 @@ public class AccountsController {
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(new ResponseDto(AccountsConstants.MESSAGE_417_DELETE, AccountsConstants.MESSAGE_417_DELETE));
     }
+  }
+
+  @GetMapping("/build-info")
+  public ResponseEntity<String> getBuildInfo() {
+    return ResponseEntity
+      .status(HttpStatus.OK)
+      .body(buildVersion);
   }
 
 }
