@@ -1,6 +1,7 @@
 package com.zzibert.accounts.Controller;
 
 import com.zzibert.accounts.constants.AccountsConstants;
+import com.zzibert.accounts.dto.AccountsContactInfoDto;
 import com.zzibert.accounts.dto.CustomerDto;
 import com.zzibert.accounts.dto.ResponseDto;
 import com.zzibert.accounts.service.IAccountsService;
@@ -34,6 +35,9 @@ public class AccountsController {
 
   @Autowired
   private Environment environment;
+
+  @Autowired
+  private AccountsContactInfoDto accountsContactInfoDto;
 
   @PostMapping("/create")
   public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {
@@ -97,6 +101,13 @@ public class AccountsController {
     return ResponseEntity
       .status(HttpStatus.OK)
       .body(environment.getProperty("JAVA_HOME"));
+  }
+
+  @GetMapping("/contact-info")
+  public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+    return ResponseEntity
+      .status(HttpStatus.OK)
+      .body(accountsContactInfoDto);
   }
 
 }
